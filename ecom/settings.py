@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-ya)^hhc@!fi0ud(^v+pmz+101ko(!k5ni)z@4tkyv-7-$9%1ni
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["https://cup-cake-store.onrender.com", "http://127.0.0.1/" ]
+ALLOWED_HOSTS = ["https://cupcake-r8et.onrender.com", "http://127.0.0.1/" ]
 
 
 # Application definition
