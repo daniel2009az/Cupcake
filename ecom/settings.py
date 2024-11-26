@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ya)^hhc@!fi0ud(^v+pmz+101ko(!k5ni)z@4tkyv-7-$9%1ni'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["cupcake-r8et.onrender.com", "127.0.0.1"]
 
