@@ -1,0 +1,74 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media
+
+# Static files
+staticfiles/
+
+# Virtual Environment
+venv/
+env/
+.env/
+.venv/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Compiled output
+*.pyc
+*.pyo
+*.pyd
+*.egg
+*.egg-info
+
+# Compiled output (Django)
+*.DS_Store
+*.sqlite3
+*.sqlite3-journal
+*/settings/local.py
+media/
+*/staticfiles/
+
+# npm
+node_modules/
+package-lock.json
+*/package.json
+
+# Miscellaneous
+.env
+.venv
+*.swp
+*.swo
+*/migrations/*
+!*/migrations/__init__.py
+*/static/node_modules/
+*/static/dist/
+*/static/package.json
+*/static/webpack.config.js
+*/static/package-lock.json
+*/static/yarn.lock
+
+# OS specific
+.DS_Store
+Thumbs.db
+ehthumbs.db
