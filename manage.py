@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+from django.contrib.auth import get_user_model
+from django.core.management.base import BaseCommand
 import os
 import sys
 
@@ -16,6 +18,27 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
+
+
+class Command(BaseCommand):
+    help = "Creates a superuser if not already created"
+
+    def handle(self, *args, **kwargs):
+        User = get_user_model()
+        username = os.getenv("DJANGO_SUPERUSER_USERNAME")
+        email = os.getenv("DJANGO_SUPERUSER_EMAIL")
+        password = os.getenv("DJANGO_SUPERUSER_PASSWORD")
+
+        if not User.objects.filter(username=username).exists():
+            User.objects.create_superuser(
+                username=username,
+                email=email,
+                password=password,
+            )
+            self.stdout.write(f"Superuser {username} criado com sucesso!")
+        else:
+            self.stdout.write(f"Superuser {username} já existe.")
+
 
 
 if __name__ == '__main__':
