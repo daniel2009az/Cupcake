@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -9,12 +10,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ya)^hhc@!fi0ud(^v+pmz+101ko(!k5ni)z@4tkyv-7-$9%1ni'
-
+# New secret- 211y%kj_bl0m^_2y8i^&6yoq+w4$q0@4^q5yr!%y+1+hr&a$^a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["https://cupcake-r8et.onrender.com", "127.0.0.1", "*"]
+# ALLOWED_HOSTS = ["https://cupcake-r8et.onrender.com"]
+
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-ya)^hhc@!fi0ud(^v+pmz+101ko(!k5ni)z@4tkyv-7-$9%1ni')
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(",")
 
 
 # Application definition
@@ -64,7 +68,13 @@ WSGI_APPLICATION = 'ecom.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+if not DEBUG:
+    DATABASES = {
+	"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
+    
+else:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
