@@ -3,6 +3,7 @@ from typing import Any
 from django.db import models
 import datetime
 from django.core.exceptions import ValidationError
+from django.utils.html import mark_safe
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
@@ -48,6 +49,16 @@ class Product(models.Model):
 
     def __str__(self):
         return  self.name
+    
+    def image_path(self):
+        if self.image:
+            return self.image.url
+        return ''
+
+    def image_tag(self):
+        if self.image:
+            return mark_safe(f'<img src="{self.image.url}" width="400" height="350" />')
+        return 'No Image'
     
 @receiver(post_delete, sender=Product)
 def delete_product_image(sender, instance, **kwargs):
