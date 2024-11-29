@@ -2,6 +2,7 @@ import os
 from typing import Any
 from django.db import models
 import datetime
+from django.core.files.storage import default_storage
 from django.core.exceptions import ValidationError
 from django.utils.html import mark_safe
 from django.db.models.signals import post_delete
@@ -46,29 +47,38 @@ class Product(models.Model):
     is_discount = models.BooleanField(default=False)
     sale_price = models.DecimalField(default=0, max_digits=10, decimal_places=2, blank=True, null=True)
     date = models.DateField(default=datetime.datetime.today, editable=True)
+    persistent_image = models.CharField(max_length=255, blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        # Se uma nova imagem foi carregada
+        if self.image:
+            # Gera um nome de arquivo único
+            filename = f'uploads/products/{self.name}_{self.id}_{self.image.name}'
+            
+            # Salva a imagem no storage
+            saved_path = default_storage.save(filename, self.image)
+            
+            # Atualiza o campo persistent_image com o caminho salvo
+            self.persistent_image = saved_path
+            
+            # Limpa o campo de imagem original após salvar
+            self.image = None
+
+        super().save(*args, **kwargs)
     def __str__(self):
         return  self.name
-    
-    def image_path(self):
-        if self.image:
-            return self.image.url
-        return ''
 
-    def image_tag(self):
-        if self.image:
-            return mark_safe(f'<img src="{self.image.url}" width="400" height="350" />')
-        return 'No Image'
-    
 @receiver(post_delete, sender=Product)
 def delete_product_image(sender, instance, **kwargs):
-    # Verifica se existe um arquivo de imagem
-    if instance.image:
-        # Verifica se o arquivo existe no sistema de arquivos
-        if os.path.isfile(instance.image.path):
-            # Remove o arquivo
-            os.remove(instance.image.path)
+    # Tenta deletar a imagem persistente
+    if instance.persistent_image:
+        try:
+            default_storage.delete(instance.persistent_image)
+        except Exception as e:
+            print(f"Erro ao deletar imagem: {e}")
 
+    
+    
     
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
