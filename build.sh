@@ -3,6 +3,8 @@
 set -o errexit
 
 python -m pip install -r requirements.txt
+mkdir -p /opt/render/project/src/media/uploads/products
+cp -R media/uploads/products/* /opt/render/project/src/media/uploads/products/
 python -m pip install psycopg2-binary
 python manage.py makemigrations
 python manage.py migrate
