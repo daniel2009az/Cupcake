@@ -1,7 +1,10 @@
+import os
 from typing import Any
 from django.db import models
 import datetime
 from django.core.exceptions import ValidationError
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 
 class Category(models.Model):
@@ -45,6 +48,15 @@ class Product(models.Model):
 
     def __str__(self):
         return  self.name
+    
+@receiver(post_delete, sender=Product)
+def delete_product_image(sender, instance, **kwargs):
+    # Verifica se existe um arquivo de imagem
+    if instance.image:
+        # Verifica se o arquivo existe no sistema de arquivos
+        if os.path.isfile(instance.image.path):
+            # Remove o arquivo
+            os.remove(instance.image.path)
 
     
 class Order(models.Model):
