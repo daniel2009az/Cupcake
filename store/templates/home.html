@@ -50,7 +50,7 @@
                                     {% if product.is_sale %}
                                     <div class="d-flex gap-2 justify-content-sm-start justify-content-center justify-content-md-center flex-wrap">
                                         <a class="btn btn-outline-dark btn-sm" href="#">Add cart</a>
-                                        <a class="btn btn-outline-dark btn-sm"  href="#">View description</a>
+                                        <a class="btn btn-outline-dark btn-sm"  href="{% url 'product' product.id %}">View description</a>
                                     </div>
                                     {% else %}
                                     <div class="text-center">
