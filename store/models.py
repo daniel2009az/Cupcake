@@ -1,9 +1,9 @@
-from typing import Any
+
 from django.db import models
 import datetime
-from django.core.exceptions import ValidationError
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+import os
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -47,6 +47,27 @@ class Product(models.Model):
     def __str__(self):
         return  self.name
 
+    def delete(self, *args, **kwargs):
+        # Primeiro, remove o arquivo de imagem do disco
+        if self.image:
+            if os.path.isfile(self.image.path):
+                os.remove(self.image.path)
+        
+        # Chama o método delete original
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Verifica se já existe um objeto existente
+        if self.pk:
+            old_instance = Product.objects.get(pk=self.pk)
+            
+            # Se a imagem foi alterada, remove a imagem antiga do disco
+            if old_instance.image and old_instance.image != self.image:
+                if os.path.isfile(old_instance.image.path):
+                    os.remove(old_instance.image.path)
+        
+        # Salva o modelo normalmente
+        super().save(*args, **kwargs)
     
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
