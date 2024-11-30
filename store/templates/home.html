@@ -55,7 +55,7 @@
                                     {% else %}
                                     <div class="text-center">
                                         <p class="mb-1 h6">Esgotado!</p>
-                                        <a  class="btn btn-outline-dark btn-sm" href="{% url 'product:id' %}" itemid="{{ product.id }}" >View description</a>
+                                        <a  class="btn btn-outline-dark btn-sm" href="{% url 'product' product.id %}" >View description</a>
                                     </div>
                                     {% endif %}
                                 </div>
