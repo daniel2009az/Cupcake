@@ -48,26 +48,24 @@ class Product(models.Model):
         return  self.name
 
     def delete(self, *args, **kwargs):
-        # Primeiro, remove o arquivo de imagem do disco
+    # Verifica se a imagem está sendo usada em outro produto
         if self.image:
-            if os.path.isfile(self.image.path):
-                os.remove(self.image.path)
-        
-        # Chama o método delete original
+            other_products = Product.objects.filter(image=self.image).exclude(pk=self.pk)
+            if not other_products.exists():  # Apenas remove se nenhum outro produto estiver usando
+                self.image.delete(save=False)
         super().delete(*args, **kwargs)
 
+
     def save(self, *args, **kwargs):
-        # Verifica se já existe um objeto existente
         if self.pk:
             old_instance = Product.objects.get(pk=self.pk)
-            
-            # Se a imagem foi alterada, remove a imagem antiga do disco
             if old_instance.image and old_instance.image != self.image:
-                if os.path.isfile(old_instance.image.path):
-                    os.remove(old_instance.image.path)
-        
-        # Salva o modelo normalmente
+                # Verifica se a imagem antiga está em uso por outro produto
+                other_products = Product.objects.filter(image=old_instance.image).exclude(pk=old_instance.pk)
+                if not other_products.exists():  # Apenas remove se nenhum outro produto estiver usando
+                    old_instance.image.delete(save=False)
         super().save(*args, **kwargs)
+
     
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
