@@ -1,6 +1,9 @@
 import os
 import dj_database_url
 from pathlib import Path
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -117,9 +120,12 @@ STATICFILES_DIRS = ['static/']
 
 # Media files
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'mediafiles'))
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+#Create media root directory
+os.makedirs(MEDIA_ROOT, exist_ok=True)
+
 
 
 

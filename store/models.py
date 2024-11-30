@@ -2,7 +2,8 @@ from typing import Any
 from django.db import models
 import datetime
 from django.core.exceptions import ValidationError
-
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -37,7 +38,7 @@ class Product(models.Model):
     price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
     description = models.CharField(default='', max_length=500, blank=True, null=True) 
-    image = models.ImageField(upload_to='uploads/products/')
+    image = models.ImageField(upload_to='uploads/products/', storage=FileSystemStorage(location=settings.MEDIA_ROOT))
     is_sale = models.BooleanField(default=False)
     is_discount = models.BooleanField(default=False)
     sale_price = models.DecimalField(default=0, max_digits=10, decimal_places=2, blank=True, null=True)
