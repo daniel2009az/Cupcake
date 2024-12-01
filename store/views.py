@@ -17,3 +17,6 @@ def about(request):
 def new(request):
     products = Product.objects.all()
     return render(request, 'new.html',  {'products': products})
+
+def googleVerify(request):
+    return render(request, 'google03bd2b58a927019e.html',  {})
