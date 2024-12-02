@@ -13,7 +13,12 @@ urlpatterns = [
     
     path('new/', views.new, name='new'),
 
-    path('google03bd2b58a927019e.html/', views.googleVerify, name='googleVerify'),
+    path('login/', views.login_user, name='login'),
+   
+    path('logout/', views.logout_user, name='logout'),
 
+    path('register/', views.register_user, name='register'),
+
+    path('google03bd2b58a927019e.html/', views.googleVerify, name='googleVerify'),
 ]  
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
