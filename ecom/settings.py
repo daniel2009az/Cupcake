@@ -3,15 +3,16 @@ import dj_database_url
 from pathlib import Path
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from dotenv import load_dotenv
 
-
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
+# django-insecure-ya)^hhc@!fi0ud(^v+pmz+101ko(!k5ni)z@4tkyv-7-$9%1ni
 # SECURITY WARNING: keep the secret key used in production secret!
 # New secret- 211y%kj_bl0m^_2y8i^&6yoq+w4$q0@4^q5yr!%y+1+hr&a$^a
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -19,9 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ALLOWED_HOSTS = ["https://cupcake-r8et.onrender.com"]
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-ya)^hhc@!fi0ud(^v+pmz+101ko(!k5ni)z@4tkyv-7-$9%1ni')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+if not SECRET_KEY:
+    SECRET_KEY = os.getenv('LOCAL_SECRET_KEY')
+
+
+
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(",")
+
+
 
 
 # Application definition
