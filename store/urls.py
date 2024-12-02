@@ -19,6 +19,9 @@ urlpatterns = [
 
     path('register/', views.register_user, name='register'),
 
+    path('category/<str:foo>', views.category, name='category'),
+    
     path('google03bd2b58a927019e.html/', views.googleVerify, name='googleVerify'),
+    
 ]  
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

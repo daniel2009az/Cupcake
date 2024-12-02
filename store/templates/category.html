@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% if products %}         
+            {% for product in products %}
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                <div class="card h-100">
+                    <!-- Wrapper para layout flexível -->
+                    <div class="d-flex flex-column flex-sm-row flex-md-column h-100">
+                        <!-- Product image-->
+                        <div class="product-image-wrapper container">
+                            <img class="card-img-top pt-1" src="{{ product.image.url }}" alt="..." />
+                        </div>
+                        <!-- Product details-->
+                        <div class="card-body p-3 d-flex flex-column">
+                            <div class="text-center text-sm-start text-md-center flex-grow-1">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder small">{{ product.name }}</h5>
+                                <!-- Product description-->
+                                {% if product.description|length > 45 %}
+                                    <p class="small mb-2">{{ product.description | slice:"0:43" }} ...</p>
+                                {% else %}
+                                    <p class="small mb-2">{{ product.description }}</p>
+                                {% endif %}
+                                <!-- Product price-->
+                                {% if product.is_discount %}
+                                    <span class="text-muted text-decoration-line-through small">R$ {{ product.price|replace_comma }}</span>
+                                    <span class="fw-bold ms-2 small">R$ {{ product.sale_price|replace_comma }}</span>
+                                {% else %}
+                                    <span class="fw-bold small">R$ {{ product.price|replace_comma }}</span>
+                                {% endif %}
+                            </div>
+                                
+                            <!-- Product actions-->
+                            <div class="mt-auto pt-3">
+                                {% if product.is_sale %}
+                                <div class="d-flex gap-2 justify-content-sm-start justify-content-center justify-content-md-center flex-wrap">
+                                    <a class="btn btn-outline-dark btn-sm" href="#">Add cart</a>
+                                    <a class="btn btn-outline-dark btn-sm"  href="{% url 'product' product.id %}">View description</a>
+                                </div>
+                                {% else %}
+                                <div class="text-center">
+                                    <p class="mb-1 h6">Esgotado!</p>
+                                    <a  class="btn btn-outline-dark btn-sm" href="{% url 'product' product.id %}" >View description</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="text-center">
+                <h2>Nenhum produto encontrado</h2><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+    
+    {% endblock %}
